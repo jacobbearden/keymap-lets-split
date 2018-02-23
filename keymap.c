@@ -1,15 +1,14 @@
-// this is the style you want to emulate.
-// This is the canonical layout file for the Quantum project. If you want to add another keyboard,
-
 #include "chimera_ls.h"
 
-// Each layer gets a name for readability, which is then used in the keymap matrix below.
-// The underscores don't mean anything - you can have a layer called STUFF or any other name.
-// Layer names don't all need to be of the same length, obviously, and you can also skip them
-// entirely and just use numbers.
+// layer names for readability
 enum chimera_lets_split_layers
 {
+  _MODS,
+
   _QWERTY,
+  _DVORAK,
+  _COLEMAK,
+
   _CAPS,
   _NUMPAD,
   _SYMBOLS,
@@ -17,16 +16,21 @@ enum chimera_lets_split_layers
   _NAV
 };
 
+// layout toggles
+#define KC_QWER M(0)
+#define KC_DVOR M(1)
+#define KC_COLE M(2)
+// layer toggles
 #define KC_NMPD TG(_NUMPAD)
 #define KC_SYMB TG(_SYMBOLS)
-#define KC_SPFN LT(_NAV,KC_EQL)
-#define KC_SCTL MT(MOD_LCTL, KC_BSLS)
-#define KC_SCTR MT(MOD_LCTL, KC_RBRC)
-#define KC_SPLT MT(MOD_LALT, KC_MINS)
+#define KC_NAV  TG(_NAV)
+// layer taps
 #define KC_MESC LT(_MACROS, KC_ESC)
-#define KC_INCL M(0)
-#define KC_PULL M(1)
-#define KC_PUSH M(2)
+// mod taps
+#define KC_SCTL MT(MOD_LCTL, KC_LBRC)
+#define KC_SCTR MT(MOD_RCTL, KC_RBRC)
+#define KC_SPLT MT(MOD_LALT, KC_MINS)
+// macros
 #define KC_SCAP M(3)
 #define KC_SCOF M(4)
 #define KC_CAD LALT(LCTL(KC_DEL))
@@ -34,34 +38,74 @@ enum chimera_lets_split_layers
 #define LONGPRESS_DELAY 150
 //#define LAYER_TOGGLE_DELAY 300
 
-// Fillers to make layering more clear
-#define _______ KC_TRNS
-#define XXXXXXX KC_NO
+// fillers to make layering more clear
+#define ____ KC_TRNS
+#define XXXX KC_NO
 #define KC_ KC_TRNS 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  [_QWERTY] = KC_KEYMAP(
+  [_MODS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-     MESC, Q  , W  , E  , R  , T  ,      Y  , U  , I  , O  , P  ,BSPC,
+     MESC,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     TAB , A  , S  , D  , F  , G  ,      H  , J  , K  , L  ,SCLN, ENT,
+     TAB ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,ENT ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     LSPO, Z  , X  , C  , V  , B  ,      N  , M  ,COMM,DOT ,SLSH,RSPC,
+     LSPO,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,RSPC,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     SCTL,SPFN,SPLT,AMPR,NMPD,SPC ,     SPC ,SYMB,ASTR,EXLM,LBRC,SCTR
+         ,SCTL,LALT,LGUI,    ,BSPC,     SPC ,    ,RGUI,RALT,SCTR,     
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
+
+
+
+  [_QWERTY] = KC_KEYMAP(
+  //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+         , Q  , W  , E  , R  , T  ,      Y  , U  , I  , O  , P  ,QUOT,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         , A  , S  , D  , F  , G  ,      H  , J  , K  , L  ,SCLN,    ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         , Z  , X  , C  , V  , B  ,      N  , M  ,COMM,DOT ,SLSH,    ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,     
+  //`----+----+----+----+----+----'    `----+----+----+----+----+----'
+  ),
+
+  [_DVORAK] = KC_KEYMAP(
+  //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+         ,QUOT,COMM,DOT , P  , Y  ,      F  , G  , C  , R  , L  ,SLSH,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         , A  , O  , E  , U  , I  ,      D  , H  , T  , N  , S  ,    ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         ,SCLN, Q  , J  , K  , X  ,      B  , M  , W  , V  , Z  ,    ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,     
+  //`----+----+----+----+----+----'    `----+----+----+----+----+----'
+  ),
+
+  [_COLEMAK] = KC_KEYMAP(
+  //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+         , Q  , W  , F  , P  , G  ,      J  , L  , U  , Y  ,SCLN,QUOT,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         , A  , R  , S  , T  , D  ,      H  , N  , E  , I  , O  ,    ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         , Z  , X  , C  , V  , B  ,      K  , M  ,COMM,DOT ,SLSH,    ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,     
+  //`----+----+----+----+----+----'    `----+----+----+----+----+----'
+  ),
+
+
 
   [_CAPS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
          ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,COLN,    ,
+         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,UNDS,    ,    ,    ,         ,    ,    ,    ,    ,    
+         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,     
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -74,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
      LSFT,    ,    ,    ,    ,    ,         ,  1 ,  2 ,  3 ,ASTR, EQL,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,BSPC,     SPC ,  0 ,  0 , DOT,SLSH,    
+         ,    ,    ,    ,    ,    ,         ,  0 ,  0 , DOT,SLSH,     
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -86,7 +130,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
       F7 , F8 , F9 , F10, F11, F12,     GRV ,PLUS,MINS,LBRC,RBRC,BSLS,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    , NO ,BSPC,     SPC ,    ,    ,    ,    ,    
+         ,    ,    ,    , NO ,BSPC,     SPC ,    ,    ,    ,    ,     
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -98,19 +142,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,    ,    ,    ,         ,PGUP,PGDN,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,DEL ,         ,    ,    ,    ,    ,   
+         ,    ,    ,    ,    ,DEL ,         ,    ,    ,    ,    ,     
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
   [_MACROS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,    ,    ,    ,    ,         ,    ,INCL,    ,    ,    ,
+         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,CAD ,    ,    ,         ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     SCAP,    ,    ,    ,    ,    ,         ,    ,PULL,PUSH,    ,SCAP,
+     SCAP,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,SCAP,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,   
+         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,     
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -121,37 +165,38 @@ const uint16_t PROGMEM fn_actions[] = {
 
 };
 
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
-{
+const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
   switch(id) {
     /* include some kind of library or header */
     case 0:
       if (record->event.pressed) {
-        SEND_STRING("#include <>");
-        return MACRO( T(LEFT), END);
+        print("layout: QWERTY");
+        set_single_persistent_default_layer(_QWERTY);
       }
       break;
     case 1:
       if (record->event.pressed) {
-        SEND_STRING("git pull");
-        return MACRO( T(ENT), END );
+        print("layout: DVORAK");
+        set_single_persistent_default_layer(_DVORAK);
       }
       break;
     case 2:
-      if (record->event.pressed){
-        SEND_STRING("git push");
-        return MACRO( T(ENT), END );
+      if (record->event.pressed) {
+        print("layout: COLEMAK");
+        set_single_persistent_default_layer(_COLEMAK);
       }
       break;
     case 3:
-      if (record->event.pressed){
+      if (record->event.pressed) {
+        print("mode: caps (on)");
         layer_on(_CAPS);
         register_code(KC_CAPSLOCK);
         unregister_code(KC_CAPSLOCK);
       }
       break;
     case 4:
-      if (record->event.pressed){
+      if (record->event.pressed) {
+        print("mode: caps (off)");
         layer_off(_CAPS);
         register_code(KC_CAPSLOCK);
         unregister_code(KC_CAPSLOCK);
@@ -160,32 +205,23 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
   }
   return MACRO_NONE;
 };
- 
 
+// colors: off, red, blue, green, yellow, magenta, cyan, white
 void matrix_scan_user(void) {
     uint8_t layer = biton32(layer_state);
     
     switch (layer) {
       case _QWERTY:
-          set_led_green;
-          break;
-        case _CAPS:
-      set_led_white;
-      break;
-        case _NUMPAD:
-            set_led_blue;
-            break;
-        case _SYMBOLS:
-            set_led_red;
-            break;
-        case _NAV:
-      set_led_magenta;
-      break;
-        case _MACROS:
-      set_led_cyan;
-      break;
-       default:
-            set_led_green;
-            break;
+        set_led_green;
+        break;
+      case _DVORAK:
+        set_led_red;
+        break;
+      case _COLEMAK:
+        set_led_blue;
+        break;
+      default:
+        set_led_white;
+        break;
     }
 };
