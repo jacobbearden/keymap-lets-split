@@ -2,6 +2,8 @@
 
 > wireless let's split keymap
 
+![](keyboard-layout.png)
+
 ## install
 
 ```bash
