@@ -12,8 +12,9 @@ enum chimera_lets_split_layers
   _CAPS,
   _NUMPAD,
   _SYMBOLS,
+  _NAV,
   _MACROS,
-  _NAV
+  _MOUSE
 };
 
 // layout toggles
@@ -21,26 +22,30 @@ enum chimera_lets_split_layers
 #define KC_DVOR M(1)
 #define KC_COLE M(2)
 // layer toggles
-#define KC_NMPD TG(_NUMPAD)
-#define KC_SYMB TG(_SYMBOLS)
-#define KC_NAV  TG(_NAV)
+#define KC_NMPD MO(_NUMPAD)
+#define KC_SYMB MO(_SYMBOLS)
+#define KC_EMOJ MO(_EMOJI)
 // layer taps
+#define KC_BCNV LT(_NAV, KC_BSPC)
 #define KC_MESC LT(_MACROS, KC_ESC)
+#define KC_MSPC LT(_MOUSE, KC_SPC)
 // mod taps
 #define KC_SCTL MT(MOD_LCTL, KC_LBRC)
 #define KC_SCTR MT(MOD_RCTL, KC_RBRC)
-#define KC_SPLT MT(MOD_LALT, KC_MINS)
 // macros
 #define KC_SCAP M(3)
 #define KC_SCOF M(4)
-#define KC_CAD LALT(LCTL(KC_DEL))
+#define KC_MLOC LCTL(LGUI(KC_Q))
+#define KC_ESCR LGUI(LSFT(KC_3))
+#define KC_SSCR LGUI(LSFT(KC_4))
 
 #define LONGPRESS_DELAY 150
 //#define LAYER_TOGGLE_DELAY 300
+//#define AUTO_SHIFT_ENABLE yes
 
 // fillers to make layering more clear
-#define ____ KC_TRNS
-#define XXXX KC_NO
+#define ______ KC_TRNS
+#define XXXXXX KC_NO
 #define KC_ KC_TRNS 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -53,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
      LSPO,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,RSPC,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,SCTL,LALT,LGUI,    ,BSPC,     SPC ,    ,RGUI,RALT,SCTR,     
+         ,SCTL,LALT,LGUI,NMPD,BCNV,     SPC ,SYMB,RGUI,RALT,SCTR,     
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -112,49 +117,61 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUMPAD] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,    ,    ,    ,    ,         ,  7 ,  8 ,  9 ,MINS,QUOT,
+      NO , F1 , F2 , F3 , F4 , NO ,     LPRN,  7 ,  8 ,  9 ,MINS,QUOT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,  4 ,  5 ,  6 ,PLUS, ENT,
+      NO , F5 , F6 , F7 , F8 , NO ,     RPRN,  4 ,  5 ,  6 ,PLUS, ENT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     LSFT,    ,    ,    ,    ,    ,         ,  1 ,  2 ,  3 ,ASTR, EQL,
+      NO , F9 ,F10 ,F11 ,F12 , NO ,      NO ,  1 ,  2 ,  3 ,ASTR, EQL,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,  0 ,  0 , DOT,SLSH,     
+      NO , NO , NO , NO ,    , NO ,      NO ,  0 ,  0 , DOT,SLSH, NO 
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
   [_SYMBOLS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,QUOT,
+     TILD,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,    ,    ,GRV ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-      F1 , F2 , F3 , F4 , F5 , F6 ,     TILD,EQL ,UNDS,LCBR,RCBR,PIPE,
+     QUOT,ASTR,BSLS,MINS,EQL ,SLSH,         ,LPRN,RPRN,LABK,RABK,DQUO,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-      F7 , F8 , F9 , F10, F11, F12,     GRV ,PLUS,MINS,LBRC,RBRC,BSLS,
+     AMPR,CIRC,PIPE,UNDS,PLUS,QUES,         ,LCBR,RCBR,LBRC,RBRC, NO ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    , NO ,BSPC,     SPC ,    ,    ,    ,    ,     
+      NO , NO , X  , NO , NO ,DEL ,      NO ,    , NO , NO ,COLN, NO  
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
   [_NAV] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,    ,    , DEL,BSPC,         ,HOME, UP , END, INS,PSCR,
+      NO , NO ,MUTE,VOLD,VOLU, NO ,      NO ,HOME,END , NO , NO ,PSCR,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,LSFT,LCTL, ENT,         ,LEFT,DOWN,RGHT, DEL,   ,
+      NO , NO ,MRWD,MPLY,MFFD, NO ,     LEFT,DOWN, UP ,RGHT, NO ,INS ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,PGUP,PGDN,    ,    ,    ,
+      NO , NO , NO ,ESCR,SSCR, NO ,      NO ,PGUP,PGDN, NO , NO , NO ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,DEL ,         ,    ,    ,    ,    ,     
+      NO , NO , NO , NO , NO ,    ,      NO , NO , NO , NO , NO , NO  
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
   [_MACROS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
+         , NO ,COLE,DVOR,QWER, NO ,      NO , NO , NO , NO , NO ,MLOC,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,CAD ,    ,    ,         ,    ,    ,    ,    ,    ,
+      NO , NO , NO , NO , NO , NO ,      NO , NO , NO , NO , NO , NO , 
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     SCAP,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,SCAP,
+     SCAP, NO , NO , NO , NO , NO ,      NO , NO , NO , NO , NO ,SCAP,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,     
+      NO , NO , NO , NO , NO , NO ,      NO , NO , NO , NO , NO , NO  
+  //`----+----+----+----+----+----'    `----+----+----+----+----+----'
+  ),
+
+  [_MOUSE] = KC_KEYMAP(
+  //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+      NO , NO , NO ,WH_D,WH_U, NO ,      NO , NO , NO , NO , NO , NO ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+      NO , NO , NO ,BTN1,BTN2, NO ,     MS_L,MS_D,MS_U,MS_R, NO , NO , 
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+      NO , NO , NO , NO , NO , NO ,      NO , NO , NO , NO , NO , NO ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+      NO , NO , NO , NO , NO , NO ,         , NO , NO , NO , NO , NO  
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -211,17 +228,8 @@ void matrix_scan_user(void) {
     uint8_t layer = biton32(layer_state);
     
     switch (layer) {
-      case _QWERTY:
-        set_led_green;
-        break;
-      case _DVORAK:
-        set_led_red;
-        break;
-      case _COLEMAK:
-        set_led_blue;
-        break;
       default:
-        set_led_white;
+        set_led_green;
         break;
     }
 };
